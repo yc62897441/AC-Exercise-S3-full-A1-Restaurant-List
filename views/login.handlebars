@@ -1,0 +1,36 @@
+<header>
+  <!-- navigation -->
+  <nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
+          width="30" height="30" class="d-inline-block align-top" alt="我的餐廳清單">
+        我的餐廳清單
+      </a>
+    </div>
+  </nav>
+
+  <div class="banner"></div>
+</header>
+
+<div class="row mt--5">
+  <div class="col-6 m-auto">
+    <div class="card card-body">
+      <h2 class="text-center mt-3">Login</h2>
+      <form action="/users/login" method="post" class="d-flex flex-column mt-2 ms-5 me-5">
+        <div class="mt-4">
+          <label for="email" class="form-label" style="font-size: 1.5em;">Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="Enter email"
+            value="{{#if email}}{{email}}{{/if}}" required>
+        </div>
+        <div class="mt-4">
+          <label for="password" class="form-label" style="font-size: 1.5em;">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Enter password"
+            value="{{#if password}}{{password}}{{/if}}" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-50 mt-5 align-self-center">Login</button>
+        <p class="align-self-center mt-2">No Account? <a href="/users/register">Register Here</a></p>
+      </form>
+    </div>
+  </div>
+</div>
