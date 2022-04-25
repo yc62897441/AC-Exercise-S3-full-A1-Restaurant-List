@@ -9,6 +9,9 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+  },
   favoriteRestaurant: {
     type: Array
   }

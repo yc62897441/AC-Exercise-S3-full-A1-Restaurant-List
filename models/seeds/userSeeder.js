@@ -27,7 +27,6 @@ Restaurant.find()
     userList[1].favoriteRestaurant.push(restaurants[1]._id.toHexString())
     userList[1].favoriteRestaurant.push(restaurants[3]._id.toHexString())
     userList[1].favoriteRestaurant.push(restaurants[5]._id.toHexString())
-    console.log('userList:', userList)
   })
   .catch(error => console.log(error))
 
@@ -38,6 +37,7 @@ db.once('open', () => {
       .then(hash => {
         User.create({
           email: user.email,
+          name: '',
           password: hash,
           favoriteRestaurant: user.favoriteRestaurant
         })

@@ -17,21 +17,27 @@
   <div class="col-6 m-auto">
     <div class="card card-body">
       <h2 class="text-center mt-3">Register</h2>
+      {{> message}}
       <form action="/users/register" method="post" class="d-flex flex-column mt-2 ms-5 me-5">
         <div class="mt-4">
-          <label for="email" class="form-label" style="font-size: 1.5em;">Email</label>
+          <label for="email" class="form-label" style="font-size: 1.5em;">Email(必填)</label>
           <input type="email" id="email" name="email" class="form-control" placeholder="Enter email"
-            value="{{#if email}}{{email}}{{/if}}" required>
+            value="{{#if email}}{{email}}{{/if}}">
         </div>
         <div class="mt-4">
-          <label for="password" class="form-label" style="font-size: 1.5em;">Password</label>
+          <label for="name" class="form-label" style="font-size: 1.5em;">Name</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Enter name"
+            value="{{#if name}}{{name}}{{/if}}">
+        </div>
+        <div class="mt-4">
+          <label for="password" class="form-label" style="font-size: 1.5em;">Password(必填)</label>
           <input type="password" id="password" name="password" class="form-control" placeholder="Enter password"
-            value="{{#if password}}{{password}}{{/if}}" required>
+            value="{{#if password}}{{password}}{{/if}}">
         </div>
         <div class="mt-4">
-          <label for="confirmPassword" class="form-label" style="font-size: 1.5em;">confirmPassword</label>
+          <label for="confirmPassword" class="form-label" style="font-size: 1.5em;">ConfirmPassword(必填)</label>
           <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-            placeholder="Enter confirmPassword" value="{{#if confirmPassword}}{{confirmPassword}}{{/if}}" required>
+            placeholder="Enter confirmPassword" value="{{#if confirmPassword}}{{confirmPassword}}{{/if}}">
         </div>
         <button type="submit" class="btn btn-primary w-50 mt-5 align-self-center">Register</button>
         <p class="align-self-center mt-2">Alredy have an Account: <a href="/users/login">Login Here</a></p>

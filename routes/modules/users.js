@@ -23,31 +23,40 @@ router.get('/register', (req, res) => {
 
 // 處理註冊資訊
 router.post('/register', (req, res) => {
-  const { email, password, confirmPassword } = req.body
+  const { email, name, password, confirmPassword } = req.body
+
+  const errors = []
+  if (!email || !passport || !confirmPassword) {
+    errors.push({ message: '請填寫 Email, Passport, ConfirmPassword 欄位' })
+  }
+  if (password !== confirmPassword) {
+    errors.push({ message: '密碼與確認密碼不相符' })
+  }
+  if (errors.length) {
+    return res.render('register', { email, name, password, confirmPassword, errors })
+  }
 
   User.findOne({ email })
-    .lean()
     .then(user => {
       if (user) {
-        console.log('The email have already been registered.')
-        return res.render('register', { email, password, confirmPassword })
+        errors.push({ message: 'Email 已經被註冊過' })
+        return res.render('register', { email, name, password, confirmPassword, errors })
       }
-      if (password !== confirmPassword) {
-        console.log('The password doesn\'t match the confirmPassword.')
-        return res.render('register', { email, password, confirmPassword })
-      }
+
       bcrypt.genSalt(10)
         .then(salt => bcrypt.hash(password, salt))
         .then(hash => {
           User.create({
             email: email,
+            name: name,
             password: hash
           })
-          res.render('login')
+            .then(() => {
+              res.render('login')
+            })
+            .catch(error => console.log(error))
         })
-        .catch(error => console.log(error))
     })
-    .catch(error => console.log(error))
 })
 
 // 登出
