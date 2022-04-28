@@ -10,16 +10,24 @@ module.exports = app => {
   app.use(passport.session())
 
   // 設定本地登入策略
-  passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+  passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
+    // 清空上次錯誤訊息
+    // req.session.messages = [] 作廢，沒在 users.js get('login) 中使用 req.session.messages
+
+    // 將登入表單傳入的 email 存到 session 中
+    req.session.email = req.body.email
+
     User.findOne({ email })
       .then(user => {
-        if (!user) { return done(null, false, { message: 'That email is not registered!' }) }
+        if (!user) {
+          req.flash('warning_msg', 'That email is not registered!')
+          return done(null, false, { message: 'That email is not registered!' })
+        }
         return bcrypt.compare(password, user.password)
           .then(isMatch => {
             if (!isMatch) {
-              return done(null, false, {
-                message: 'Email or Password incorrect.'
-              })
+              req.flash('warning_msg', 'Email or Password incorrect.')
+              return done(null, false, { message: 'Email or Password incorrect.' })
             }
             return done(null, user)
           })
@@ -29,10 +37,10 @@ module.exports = app => {
 
   // 設定 Facebook 登入策略
   passport.use(new FacebookStrategy({
-    clientID: '2296561663829376',
-    clientSecret: '80f205ef9ae10eef548f283701be3e6b',
-    callbackURL: 'http://localhost:3000/auth/facebook/callback',
-    profileFields: ['email', 'displayName']  // profileFields 設定是和 Facebook 要求開放的資料，我們要了兩種資料
+    clientID: process.env.FACEBOOK_ID,
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackURL: process.env.FACEBOOK_CALLBACK,
+    profileFields: ['email', 'displayName'] // profileFields 設定是和 Facebook 要求開放的資料，我們要了兩種資料
   }, (accessToken, refreshToken, profile, done) => {
     // profile 獲得的臉書資訊
     const { name, email } = profile._json

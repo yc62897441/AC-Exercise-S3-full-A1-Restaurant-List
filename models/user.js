@@ -10,10 +10,10 @@ const UserSchema = new Schema({
     required: true
   },
   name: {
-    type: String,
+    type: String
   },
-  favoriteRestaurant: {
-    type: Array
+  favoriteRestaurants: {
+    type: Object
   }
 })
 

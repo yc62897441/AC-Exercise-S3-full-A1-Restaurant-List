@@ -28,6 +28,9 @@ const RestaurantSchema = new Schema({
   },
   description: {
     type: String
+  },
+  userId: {
+    type: String
   }
 })
 

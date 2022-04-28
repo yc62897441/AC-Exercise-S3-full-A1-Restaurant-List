@@ -3,15 +3,18 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const User = require('../../models/user')
-const { application } = require('express')
 
 // 登入頁面
 router.get('/login', (req, res) => {
-  res.render('login')
+  const email = req.session.email
+  // 刪除 session 中的特定資料
+  delete req.session.email
+  res.render('login', { email })
 })
 
 // 處理登入資訊
 router.post('/login', passport.authenticate('local', {
+  failureMessage: true,
   successRedirect: '/',
   failureRedirect: '/users/login'
 }))
@@ -61,6 +64,10 @@ router.post('/register', (req, res) => {
 
 // 登出
 router.get('/logout', (req, res) => {
+  // 刪除 session 中的特定資料
+  delete req.session.email
+  delete req.session.passport
+
   req.logout()
   req.flash('success_msg', '你已經成功登出。')
   res.redirect('/users/login')
